@@ -1,4 +1,4 @@
-Projetos para estudo ¯(°_o)/¯
+Projetos para estudo (°_o)
 ----------------------------
 
 #### HTML & CSS
