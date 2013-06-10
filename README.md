@@ -1,4 +1,4 @@
-Projetos para estudo!
+Projetos para estudo |-)
 --------------------
 
 #### HTML & CSS
