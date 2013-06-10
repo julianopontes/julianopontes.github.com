@@ -2,5 +2,5 @@ Projetos para estudo (°_o)
 ----------------------------
 
 #### HTML & CSS
-* [Smells Like Bakin'](http://julianopontes.github.com/bakin)
+* [Smells Like Bakin'](http://julianopontes.github.com/html/bakin)
 
