@@ -1,0 +1,9 @@
+---
+- name: restart jboss 
+  service: name=jboss state=restarted
+
+- name: restart iptables
+  shell: iptables-restore < /etc/iptables-up
+
+- name: add admin
+  raw: /usr/share/jboss-as/bin/./add-user.sh admin admin123

@@ -1,0 +1,44 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Install unzip and openjdk-7
+  apt: pkg={{item}} state=present
+  with_items:
+  - unzip
+  - openjdk-7-jdk
+
+- name: Download JBoss from jboss.org
+  get_url: url=http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip dest=/opt/jboss-as-7.1.1.Final.zip
+
+- name: Extract archive
+  command: chdir=/usr/share /usr/bin/unzip -q /opt/jboss-as-7.1.1.Final.zip creates=/usr/share/jboss-as
+
+  # Rename the dir to avoid encoding the version in the init script
+- name: Rename install directory
+  command: chdir=/usr/share /bin/mv jboss-as-7.1.1.Final jboss-as creates=/usr/share/jboss-as
+
+- name: Copying standalone.xml configuration file
+  template: src=standalone.xml dest=/usr/share/jboss-as/standalone/configuration/
+  notify:
+  - restart jboss
+  - add admin
+
+- name: Add group "jboss"
+  group: name=jboss
+
+- name: Add user "jboss"
+  user: name=jboss group=jboss home=/usr/share/jboss-as
+
+- name: Change ownership of JBoss installation
+  file: path=/usr/share/jboss-as/ owner=jboss group=jboss state=directory recurse=yes
+
+- name: Copy the init script
+  copy: src=jboss-as-standalone.sh dest=/etc/init.d/jboss mode=0755
+
+- name: Enable JBoss to be started at boot
+  service: name=jboss enabled=yes state=started
+
+- name: Update iptable rules
+  template: src=iptables-save dest=/etc/iptables-up
+  notify: restart iptables

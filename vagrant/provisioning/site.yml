@@ -1,0 +1,9 @@
+---
+# This playbook deploys a simple standalone JBoss server. 
+
+- hosts: vagrant 
+  sudo: yes
+  vars_files:
+  - group_vars/jboss-servers.yml
+  roles:
+  - jboss-standalone
